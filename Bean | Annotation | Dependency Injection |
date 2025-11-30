@@ -1,1 +1,90 @@
+What is Bean ? 
+> Java object, managed by spring container(IOC).
+
+what is IOC container ? 
+It is a container which contains all the beans which are created and manages their end to end lifecycle.
+
+Ways to create a bean ? 
+1. @componenet
+2. @Bean
+
+@Compnent > follows "convention over configuration" approach.
+meaning it follows the convention of creating the object with calling default constructor.
+
+
+@Component only creates the object with default constructor. 
+If we provide our own constructor in the class and start application it APPLICATION FAILS TO START.
+
+
+@Bean is used to provide external configuration to our component. 
+By making use of @Configuration annotation.
+
+
+Between @Component @Bean both > @Bean is given more priority.
+
+
+What if we have multiple bean methods creating same bean object ? 
+Both objects are created. And as to which object is used by spring is defined by @Qualifier and name of bean.
+
+
+How spring boot finds these beans ? 
+There are two was : 
+1. @ComponentScan(basePackages = "com.abc.application").
+Spring boot finds @componenet scan and scans all the  packages and sub-packages inside base-
+packages for classes annotated with @Component and @service etc.
+
+ @SpringBootApplication also has @ComponentScan annotation inside it.
+It's autoconfuguration starts from the class where @SpringBootApplication is present, and scans all
+the subclasses.
+
+1. @Configuration
+  Spring boot looks for @Configuration. If finds, it creates objects of all the beans defined
+  inside the configuration class.
+
+
+
+At what time bean is created ? 
+1. Eager Initialization:                                     2. Lazy Initialization: 
+Some beans are created at the start of application.        Some beans are created lazily meaning at the the time when they are needed
+Beans with Singleton scope are eagerly initialized.        Beans with Prototype scope are lazily initialized.
+By default beans are singleton.                             @Lazy is used to define it's lazy.
+
+
+
+
+
+    LIFECYCLE OF BEAN
+
+Application Start
+1. Invoke IOC(search for beans using @componentScan and @Configuration) : Application context provides implementation of IOC.
+2. Consturcts the beans : which can be eagerly initialized.
+3. Inject dependency into constructed Bean : if dependency bean is present injects it else creates and injects.
+4. @PostConstruct : If we want to do task before using bean we can do it in postconstruct.
+5. UseBean  
+6. @PreDestroy : 
+7. Bean Destroy 
+
+
+------------------------------------------------------------------------------------------------
+
+
+@Controller                                       @RestController = (@Controller + @ResponseBody)
+ -@RequestMapping is for each method             -@RequestMapping is used at class level.
+These annotations indicate that these classes are responsible for handling incoming HTTP reqeusts.
+@ResponseBody tells that the return type of the method is serialized to HTTP resposne body.
+@ReqeeustParam helps binding request parameter with controller method parameter.
+@InitBinder is defined in the @RestController class. It has a function initBintder which 
+does binder.registerCustomBinder( TypeOfRequestParameter , nameOfRequestParameter , new ExtendedPropertyEditorSupport() )
+@PathVariable
+ResponseEntity = ResponseBody + ResponseStatus + ResponseHeader
+
+
+Major diff bw @Controller and @RestController
+public String methodName(@RequestParam String abc){
+}
+
+@Controller would give error in this syntax and @RestController would not.
+Because @Controller is would consider response as string since we have not annoted method with @RequestBody
+But @RestController would consider it as ResposneEntity only.
+
 
